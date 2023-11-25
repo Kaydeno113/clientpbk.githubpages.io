@@ -30,7 +30,7 @@ firebase.auth().onAuthStateChanged(function (user) {
         const photosRef = firebase.database().ref('users/' + user.uid + '/photos');
 
         // Fetch and display photos from Google Drive
-        fetchGoogleDrivePhotos(user.uid, 'photos pbk clients', photoContainer);
+        fetchGoogleDrivePhotos(user.uid, '12DLhcLqjUN4EQ-ABSJcfQUpP5jI4-FsE', photoContainer);
     }
 });
 
