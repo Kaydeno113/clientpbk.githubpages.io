@@ -11,6 +11,9 @@ var firebaseConfig = {
 // Your Google Drive API key
 var googleDriveApiKey = 'AIzaSyAofUsQsipztfSWTBZlLwzBexLOPqPJJ5I';
 
+// Assuming 'parentFolderId' is the ID of the parent folder 'photos pbk clients'
+var parentFolderId = 'photos pbk clients';
+
 // Initialize Firebase
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
@@ -30,7 +33,7 @@ firebase.auth().onAuthStateChanged(function (user) {
         const photosRef = firebase.database().ref('users/' + user.uid + '/photos');
 
         // Fetch and display photos from Google Drive
-        fetchGoogleDrivePhotos(user.uid, photoContainer);
+        fetchGoogleDrivePhotos(user.uid, parentFolderId, photoContainer);
     }
 });
 
@@ -45,9 +48,9 @@ function logout() {
 }
 
 // Function to fetch photos from Google Drive API
-function fetchGoogleDrivePhotos(userId, photoContainer) {
-    // Construct the API endpoint for listing files in the user's subfolder
-    var apiUrl = `https://www.googleapis.com/drive/v3/files?q='${userId}'+in+parents&key=${googleDriveApiKey}`;
+function fetchGoogleDrivePhotos(userId, parentFolderId, photoContainer) {
+    // Construct the API endpoint for listing image files in the user's subfolder
+    var apiUrl = `https://www.googleapis.com/drive/v3/files?q='${userId}'+in+parents+'${parentFolderId}'+and+mimeType='image/jpeg'&key=${googleDriveApiKey}`;
 
     console.log('Fetching photos from Google Drive...');
     
