@@ -8,6 +8,9 @@ var firebaseConfig = {
     appId: "1:792879644996:web:8a83f37d98697855029711"
 };
 
+// Your Google Drive API key
+var googleDriveApiKey = 'AIzaSyAofUsQsipztfSWTBZlLwzBexLOPqPJJ5I';
+
 // Initialize Firebase
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
@@ -16,7 +19,7 @@ if (!firebase.apps.length) {
 // Check user authentication status
 firebase.auth().onAuthStateChanged(function(user) {
     if (!user) {
-        // User is not authenticated, redirect to login page
+        // User is not authenticated, redirect to the login page
         window.location.href = 'https://clients.photographybykayden.studio';
     } else {
         // User is authenticated, update UI or perform other tasks if needed
@@ -26,51 +29,46 @@ firebase.auth().onAuthStateChanged(function(user) {
         const photoContainer = document.getElementById('photoContainer');
         const photosRef = firebase.database().ref('users/' + user.uid + '/photos');
 
-        // Listen for changes in the photos node
-        photosRef.on('value', function(snapshot) {
-            // Clear existing photos
-            photoContainer.innerHTML = '';
-
-            // Iterate through each photo and create HTML elements
-            snapshot.forEach(function(photoSnapshot) {
-                const photoData = photoSnapshot.val();
-                const photoKey = photoSnapshot.key;
-
-                // Create HTML elements for each photo
-                const photoDiv = document.createElement('div');
-                photoDiv.className = 'photo';
-
-                const photoImg = document.createElement('img');
-                photoImg.src = photoData.url;
-                photoImg.alt = 'User Photo';
-
-                const downloadButton = document.createElement('button');
-                downloadButton.className = 'download-button';
-                downloadButton.innerText = 'Download';
-                downloadButton.addEventListener('click', function() {
-                    // Add logic to download the photo (e.g., open in a new window or trigger a download)
-                    // You may need to implement this part based on your requirements
-                    console.log('Download photo:', photoKey);
-                });
-
-                // Append elements to the photo container
-                photoDiv.appendChild(photoImg);
-                photoDiv.appendChild(downloadButton);
-                photoContainer.appendChild(photoDiv);
-            });
-        });
+        // Fetch and display photos from Google Drive
+        fetchGoogleDrivePhotos(user.uid, 'your_folder_id', photoContainer);
     }
 });
 
 // Function to handle user logout
 function logout() {
     firebase.auth().signOut().then(function() {
-        // Sign-out successful, redirect to login page
+        // Sign-out successful, redirect to the login page
         window.location.href = 'https://clients.photographybykayden.studio';
     }).catch(function(error) {
         console.error('Logout error:', error);
     });
 }
-.
 
+// Function to fetch photos from Google Drive API
+function fetchGoogleDrivePhotos(userId, folderId, photoContainer) {
+    // Construct the API endpoint for listing files in the user's subfolder
+    var apiUrl = `https://www.googleapis.com/drive/v3/files?q='${userId}'+in+parents+%27${folderId}%27+and+mimeType=%27image/jpeg%27&key=${googleDriveApiKey}`;
 
+    // Make an API request using fetch or another AJAX method
+    fetch(apiUrl)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Process the data (photo URLs or relevant information)
+            // For simplicity, let's assume the URLs are available in the data
+
+            // Display photos in your webpage
+            data.files.forEach(function(file) {
+                var photoImg = document.createElement('img');
+                photoImg.src = file.webContentLink;
+                photoImg.alt = 'User Photo';
+
+                photoContainer.appendChild(photoImg);
+            });
+        })
+        .catch(error => console.error('Error fetching photos:', error));
+}
