@@ -53,24 +53,29 @@ function fetchGoogleDrivePhotos(userId, parentFolderId, photoContainer) {
     var apiUrl = `https://www.googleapis.com/drive/v3/files?q='${userId}'+in+parents+'${parentFolderId}'+and+mimeType='image/jpeg'&key=${googleDriveApiKey}`;
 
     console.log('Fetching photos from Google Drive...');
-    
+
     // Make an API request using fetch or another AJAX method
     fetch(apiUrl)
         .then(response => response.json())
         .then(data => {
             console.log('Fetched photos from Google Drive:', data);
 
-            // Process the data (photo URLs or relevant information)
-            // For simplicity, let's assume the URLs are available in the data
+            // Check if data.files exists and is an array
+            if (data.files && Array.isArray(data.files)) {
+                // Process the data (photo URLs or relevant information)
+                // For simplicity, let's assume the URLs are available in the data
 
-            // Display photos in your webpage
-            data.files.forEach(function (file) {
-                var photoImg = document.createElement('img');
-                photoImg.src = file.webContentLink;
-                photoImg.alt = 'User Photo';
+                // Display photos in your webpage
+                data.files.forEach(function (file) {
+                    var photoImg = document.createElement('img');
+                    photoImg.src = file.webContentLink;
+                    photoImg.alt = 'User Photo';
 
-                photoContainer.appendChild(photoImg);
-            });
+                    photoContainer.appendChild(photoImg);
+                });
+            } else {
+                console.error('Invalid or empty response from Google Drive API.');
+            }
         })
         .catch(error => console.error('Error fetching photos from Google Drive:', error));
 }
