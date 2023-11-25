@@ -30,11 +30,9 @@ firebase.auth().onAuthStateChanged(function (user) {
         const photosRef = firebase.database().ref('users/' + user.uid + '/photos');
 
         // Fetch and display photos from Google Drive
-        fetchGoogleDrivePhotos(user.uid, '12DLhcLqjUN4EQ-ABSJcfQUpP5jI4-FsE', photoContainer);
+        fetchGoogleDrivePhotos(user.uid, photoContainer);
     }
 });
-console.log('API URL:', apiUrl);
-
 
 // Function to handle user logout
 function logout() {
@@ -47,36 +45,26 @@ function logout() {
 }
 
 // Function to fetch photos from Google Drive API
-function fetchGoogleDrivePhotos(userId, parentFolderId, photoContainer) {
-    // Construct the API endpoint for listing image files in the user's subfolder
-    
-var apiUrl = `https://www.googleapis.com/drive/v3/files?q='12DLhcLqjUN4EQ-ABSJcfQUpP5jI4-FsE'+in+parents&key=AIzaSyAofUsQsipztfSWTBZlLwzBexLOPqPJJ5I
-`;
-
-    console.log('Fetching photos from Google Drive...');
+function fetchGoogleDrivePhotos(userId, photoContainer) {
+    // Construct the API endpoint for listing files in the user's subfolder
+    var folderId = '12DLhcLqjUN4EQ-ABSJcfQUpP5jI4-FsE'; // Replace with your actual folder ID
+    var apiUrl = `https://www.googleapis.com/drive/v3/files?q='${userId}'+in+parents+'${folderId}'&key=${googleDriveApiKey}`;
 
     // Make an API request using fetch or another AJAX method
     fetch(apiUrl)
         .then(response => response.json())
         .then(data => {
-            console.log('Fetched photos from Google Drive:', data);
+            // Process the data (photo URLs or relevant information)
+            // For simplicity, let's assume the URLs are available in the data
 
-            // Check if data.files exists and is an array
-            if (data.files && Array.isArray(data.files)) {
-                // Process the data (photo URLs or relevant information)
-                // For simplicity, let's assume the URLs are available in the data
+            // Display photos in your webpage
+            data.files.forEach(function (file) {
+                var photoImg = document.createElement('img');
+                photoImg.src = file.webContentLink;
+                photoImg.alt = 'User Photo';
 
-                // Display photos in your webpage
-                data.files.forEach(function (file) {
-                    var photoImg = document.createElement('img');
-                    photoImg.src = file.webContentLink;
-                    photoImg.alt = 'User Photo';
-
-                    photoContainer.appendChild(photoImg);
-                });
-            } else {
-                console.error('Invalid or empty response from Google Drive API.');
-            }
+                photoContainer.appendChild(photoImg);
+            });
         })
         .catch(error => console.error('Error fetching photos from Google Drive:', error));
 }
