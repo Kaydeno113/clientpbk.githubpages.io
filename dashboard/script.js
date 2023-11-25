@@ -8,9 +8,6 @@ var firebaseConfig = {
     appId: "1:792879644996:web:8a83f37d98697855029711"
 };
 
-// Your Google Drive API key
-var googleDriveApiKey = "YAIzaSyAofUsQsipztfSWTBZlLwzBexLOPqPJJ5I";
-
 // Initialize Firebase
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
@@ -29,8 +26,39 @@ firebase.auth().onAuthStateChanged(function(user) {
         const photoContainer = document.getElementById('photoContainer');
         const photosRef = firebase.database().ref('users/' + user.uid + '/photos');
 
-        // Fetch and display photos from Google Drive
-        fetchGoogleDrivePhotos(user.uid, photoContainer);
+        // Listen for changes in the photos node
+        photosRef.on('value', function(snapshot) {
+            // Clear existing photos
+            photoContainer.innerHTML = '';
+
+            // Iterate through each photo and create HTML elements
+            snapshot.forEach(function(photoSnapshot) {
+                const photoData = photoSnapshot.val();
+                const photoKey = photoSnapshot.key;
+
+                // Create HTML elements for each photo
+                const photoDiv = document.createElement('div');
+                photoDiv.className = 'photo';
+
+                const photoImg = document.createElement('img');
+                photoImg.src = photoData.url;
+                photoImg.alt = 'User Photo';
+
+                const downloadButton = document.createElement('button');
+                downloadButton.className = 'download-button';
+                downloadButton.innerText = 'Download';
+                downloadButton.addEventListener('click', function() {
+                    // Add logic to download the photo (e.g., open in a new window or trigger a download)
+                    // You may need to implement this part based on your requirements
+                    console.log('Download photo:', photoKey);
+                });
+
+                // Append elements to the photo container
+                photoDiv.appendChild(photoImg);
+                photoDiv.appendChild(downloadButton);
+                photoContainer.appendChild(photoDiv);
+            });
+        });
     }
 });
 
@@ -42,25 +70,4 @@ function logout() {
     }).catch(function(error) {
         console.error('Logout error:', error);
     });
-}
-
-// Function to fetch photos from Google Drive API
-function fetchGoogleDrivePhotos(userId, photoContainer) {
-    // Construct the API endpoint for listing files in the user's folder
-    var apiUrl = `https://www.googleapis.com/drive/v3/files?q='${userId}'+in+parents&key=${googleDriveApiKey}`;
-
-    // Make an API request using fetch
-    fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => {
-            // Process the data and display photos in your webpage
-            data.files.forEach(function(file) {
-                var photoImg = document.createElement('img');
-                photoImg.src = file.webContentLink;
-                photoImg.alt = 'User Photo';
-
-                photoContainer.appendChild(photoImg);
-            });
-        })
-        .catch(error => console.error('Error fetching photos:', error));
 }
