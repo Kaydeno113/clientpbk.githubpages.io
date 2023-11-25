@@ -49,10 +49,14 @@ function fetchGoogleDrivePhotos(userId, photoContainer) {
     // Construct the API endpoint for listing files in the user's subfolder
     var apiUrl = `https://www.googleapis.com/drive/v3/files?q='${userId}'+in+parents&key=${googleDriveApiKey}`;
 
+    console.log('Fetching photos from Google Drive...');
+    
     // Make an API request using fetch or another AJAX method
     fetch(apiUrl)
         .then(response => response.json())
         .then(data => {
+            console.log('Fetched photos from Google Drive:', data);
+
             // Process the data (photo URLs or relevant information)
             // For simplicity, let's assume the URLs are available in the data
 
@@ -65,5 +69,5 @@ function fetchGoogleDrivePhotos(userId, photoContainer) {
                 photoContainer.appendChild(photoImg);
             });
         })
-        .catch(error => console.error('Error fetching photos:', error));
+        .catch(error => console.error('Error fetching photos from Google Drive:', error));
 }
