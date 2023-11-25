@@ -1,8 +1,41 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
 </head>
 <body>
+
+<script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-auth-compat.js"></script>
+
+<script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+        apiKey: "AIzaSyC9fV9SVm7w16t7D8UannqxA49880cutJI",
+        authDomain: "clientspbk.firebaseapp.com",
+        projectId: "clientspbk",
+        storageBucket: "gs://clientspbk.appspot.com",
+        messagingSenderId: "792879644996",
+        appId: "1:792879644996:web:8a83f37d98697855029711"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    // Check user authentication status
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (!user) {
+            // User is not authenticated, redirect to login page
+            window.location.href = '/login.html';
+        }
+    });
+</script>
+
+<!-- The rest of your dashboard page content -->
 <h1>Hello World</h1>
 <p>Hello World</p>
+
 </body>
 </html>
