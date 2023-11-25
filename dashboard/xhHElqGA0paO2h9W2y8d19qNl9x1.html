@@ -4,38 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
+<div class="header">
+    <h1>Welcome, <span id="username"></span>!</h1>
+    <button onclick="logout()">Logout</button>
+</div>
+
+<div class="photo-container" id="photoContainer">
+    <!-- Photos will be dynamically added here using JavaScript -->
+</div>
+
 <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-auth-compat.js"></script>
-
-<script>
-    // Your web app's Firebase configuration
-    var firebaseConfig = {
-        apiKey: "AIzaSyC9fV9SVm7w16t7D8UannqxA49880cutJI",
-        authDomain: "clientspbk.firebaseapp.com",
-        projectId: "clientspbk",
-        storageBucket: "gs://clientspbk.appspot.com",
-        messagingSenderId: "792879644996",
-        appId: "1:792879644996:web:8a83f37d98697855029711"
-    };
-
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-
-    // Check user authentication status
-    firebase.auth().onAuthStateChanged(function(user) {
-        if (!user) {
-            // User is not authenticated, redirect to login page
-            window.location.href = '/index.html';
-        }
-    });
-</script>
-
-<!-- The rest of your dashboard page content -->
-<h1>Hello World</h1>
-<p>Hello World</p>
-
+<script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-database-compat.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
