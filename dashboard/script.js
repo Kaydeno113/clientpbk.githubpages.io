@@ -9,7 +9,7 @@ var firebaseConfig = {
 };
 
 // Your Google Drive API key
-var googleDriveApiKey = 'AIzaSyAofUsQsipztfSWTBZlLwzBexLOPqPJJ5I';
+var googleDriveApiKey = "YAIzaSyAofUsQsipztfSWTBZlLwzBexLOPqPJJ5I";
 
 // Initialize Firebase
 if (!firebase.apps.length) {
@@ -17,7 +17,7 @@ if (!firebase.apps.length) {
 }
 
 // Check user authentication status
-firebase.auth().onAuthStateChanged(function (user) {
+firebase.auth().onAuthStateChanged(function(user) {
     if (!user) {
         // User is not authenticated, redirect to login page
         window.location.href = 'https://clients.photographybykayden.studio';
@@ -30,39 +30,36 @@ firebase.auth().onAuthStateChanged(function (user) {
         const photosRef = firebase.database().ref('users/' + user.uid + '/photos');
 
         // Fetch and display photos from Google Drive
-        fetchGoogleDrivePhotos(user.uid, '12DLhcLqjUN4EQ-ABSJcfQUpP5jI4-FsE', photoContainer);
+        fetchGoogleDrivePhotos(user.uid, photoContainer);
     }
 });
 
 // Function to handle user logout
 function logout() {
-    firebase.auth().signOut().then(function () {
+    firebase.auth().signOut().then(function() {
         // Sign-out successful, redirect to login page
         window.location.href = 'https://clients.photographybykayden.studio';
-    }).catch(function (error) {
+    }).catch(function(error) {
         console.error('Logout error:', error);
     });
 }
 
 // Function to fetch photos from Google Drive API
-function fetchGoogleDrivePhotos(userId, folderId, container) {
-    // Construct the API endpoint for listing files in the user's subfolder
-    var apiUrl = `https://www.googleapis.com/drive/v3/files?q='${userId}'+in+parents+and+mimeType='image/jpeg'&key=${googleDriveApiKey}`;
+function fetchGoogleDrivePhotos(userId, photoContainer) {
+    // Construct the API endpoint for listing files in the user's folder
+    var apiUrl = `https://www.googleapis.com/drive/v3/files?q='${userId}'+in+parents&key=${googleDriveApiKey}`;
 
-    // Make an API request using fetch or another AJAX method
+    // Make an API request using fetch
     fetch(apiUrl)
         .then(response => response.json())
         .then(data => {
-            // Process the data (photo URLs or relevant information)
-            // For simplicity, let's assume the URLs are available in the data
-
-            // Display photos in your webpage
-            data.files.forEach(function (file) {
+            // Process the data and display photos in your webpage
+            data.files.forEach(function(file) {
                 var photoImg = document.createElement('img');
                 photoImg.src = file.webContentLink;
                 photoImg.alt = 'User Photo';
 
-                container.appendChild(photoImg);
+                photoContainer.appendChild(photoImg);
             });
         })
         .catch(error => console.error('Error fetching photos:', error));
