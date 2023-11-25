@@ -19,8 +19,16 @@ function login() {
 
     firebase.auth().signInWithEmailAndPassword(username, password)
         .then(function(userCredential) {
+<<<<<<< HEAD
             // Signed in successfully, redirect to the dashboard
             window.location.href = 'https://photogrpahybykayden.studio';
+=======
+            // Get the user's UID
+            var userUID = userCredential.user.uid;
+
+            // Redirect to the user's dashboard based on the UID
+            window.location.href = 'https://clients.photographybykayden.studio/dashboard/' + userUID;
+>>>>>>> afff6d8 (dashboard dependant on user login)
         })
         .catch(function(error) {
             // Handle errors, e.g., display an error message
