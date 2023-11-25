@@ -9,7 +9,7 @@ var firebaseConfig = {
 };
 
 // Your Google Drive API key
-var googleDriveApiKey = 'YOUR_GOOGLE_DRIVE_API_KEY';
+var googleDriveApiKey = 'AIzaSyAofUsQsipztfSWTBZlLwzBexLOPqPJJ5I';
 
 // Initialize Firebase
 if (!firebase.apps.length) {
@@ -47,7 +47,7 @@ function logout() {
 // Function to fetch photos from Google Drive API
 function fetchGoogleDrivePhotos(userId, photoContainer) {
     // Construct the API endpoint for listing files in the user's subfolder
-    var apiUrl = `https://www.googleapis.com/drive/v3/files?q='${userId}'+in+parents&key=${AIzaSyAofUsQsipztfSWTBZlLwzBexLOPqPJJ5I}`;
+    var apiUrl = `https://www.googleapis.com/drive/v3/files?q='${userId}'+in+parents&key=${googleDriveApiKey}`;
 
     // Make an API request using fetch or another AJAX method
     fetch(apiUrl)
