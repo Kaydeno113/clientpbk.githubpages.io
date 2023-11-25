@@ -17,14 +17,17 @@ if (!firebase.apps.length) {
 firebase.auth().onAuthStateChanged(function(user) {
     if (!user) {
         // User is not authenticated, redirect to login page
-        window.location.href = 'https://clients.photographybykayden.studio';
+        window.location.href = '/index.html';
     } else {
         // User is authenticated, update UI or perform other tasks if needed
         document.getElementById('username').innerText = user.displayName;
 
-        // Assuming you have a node in your database like "users/uid_of_user/photos"
+        // Fetch and display photos for the authenticated user
         const photoContainer = document.getElementById('photoContainer');
-        const photosRef = firebase.database().ref('users/' + user.uid + '/photos');
+        const userId = user.uid;
+
+        // Assuming you want photos to be stored under "dashboard/photos/userId"
+        const photosRef = firebase.database().ref('dashboard/photos/' + userId);
 
         // Listen for changes in the photos node
         photosRef.on('value', function(snapshot) {
@@ -66,7 +69,7 @@ firebase.auth().onAuthStateChanged(function(user) {
 function logout() {
     firebase.auth().signOut().then(function() {
         // Sign-out successful, redirect to login page
-        window.location.href = 'https://clients.photographybykayden.studio';
+        window.location.href = '/index.html';
     }).catch(function(error) {
         console.error('Logout error:', error);
     });
