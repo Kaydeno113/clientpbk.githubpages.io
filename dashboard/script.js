@@ -30,7 +30,7 @@ firebase.auth().onAuthStateChanged(function (user) {
         const photosRef = firebase.database().ref('users/' + user.uid + '/photos');
 
         // Fetch and display photos from Google Drive
-        fetchGoogleDrivePhotos(user.uid, photoContainer);
+        fetchGoogleDrivePhotos(user.uid, '12DLhcLqjUN4EQ-ABSJcfQUpP5jI4-FsE', photoContainer);
     }
 });
 
@@ -45,11 +45,9 @@ function logout() {
 }
 
 // Function to fetch photos from Google Drive API
-function fetchGoogleDrivePhotos(userId, photoContainer) {
+function fetchGoogleDrivePhotos(userId, folderId, container) {
     // Construct the API endpoint for listing files in the user's subfolder
-    var folderId = '12DLhcLqjUN4EQ-ABSJcfQUpP5jI4-FsE'; // Replace with your actual folder ID
-    var apiUrl = `https://www.googleapis.com/drive/v3/files?q='${folderId}' in parents&key=${googleDriveApiKey}`;
-
+    var apiUrl = `https://www.googleapis.com/drive/v3/files?q='${userId}'+in+parents+and+mimeType='image/jpeg'&key=${googleDriveApiKey}`;
 
     // Make an API request using fetch or another AJAX method
     fetch(apiUrl)
@@ -64,8 +62,8 @@ function fetchGoogleDrivePhotos(userId, photoContainer) {
                 photoImg.src = file.webContentLink;
                 photoImg.alt = 'User Photo';
 
-                photoContainer.appendChild(photoImg);
+                container.appendChild(photoImg);
             });
         })
-        .catch(error => console.error('Error fetching photos from Google Drive:', error));
+        .catch(error => console.error('Error fetching photos:', error));
 }
