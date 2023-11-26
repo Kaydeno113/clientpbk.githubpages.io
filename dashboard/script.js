@@ -47,8 +47,8 @@ function logout() {
 // Function to fetch photos from Google Drive API
 function fetchGoogleDrivePhotos(userId, folderId, photoContainer) {
     // Construct the API endpoint for listing files in the user's subfolder
-    var apiUrl = 'https://www.googleapis.com/drive/v3/files?' +
-        `q='${userId}'+in+parents+%27${folderId}%27+and+mimeType=%27image/jpeg%27&key=${googleDriveApiKey}`;
+    var apiUrl = `https://www.googleapis.com/drive/v3/files?q=${userId}+in+parents+%27${folderId}%27&key=${googleDriveApiKey}`;
+
 
     // Log the constructed API URL to the console
     console.log('API URL:', apiUrl);
