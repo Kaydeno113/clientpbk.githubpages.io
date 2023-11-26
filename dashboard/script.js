@@ -50,6 +50,9 @@ function fetchGoogleDrivePhotos(userId, folderId, photoContainer) {
     var apiUrl = 'https://www.googleapis.com/drive/v3/files?' +
         `q='${userId}'+in+parents+%27${folderId}%27+and+mimeType=%27image/jpeg%27&key=${googleDriveApiKey}`;
 
+    // Log the constructed API URL to the console
+    console.log('API URL:', apiUrl);
+
     // Make an API request using fetch or another AJAX method
     fetch(apiUrl)
         .then(response => {
@@ -59,6 +62,9 @@ function fetchGoogleDrivePhotos(userId, folderId, photoContainer) {
             return response.json();
         })
         .then(data => {
+            // Log the response data to the console
+            console.log('Response Data:', data);
+
             // Process the data (photo URLs or relevant information)
             // For simplicity, let's assume the URLs are available in the data
 
