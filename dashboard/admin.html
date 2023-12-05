@@ -1,0 +1,70 @@
+<!-- Admin Page HTML -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page</title>
+    <!-- Add your Firebase scripts here -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-storage-compat.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        #userDropdown, #photoInput, #descriptionInput, button {
+            margin-bottom: 10px;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- User Selection Dropdown -->
+    <label for="userDropdown">Select User:</label>
+    <select id="userDropdown">
+        <!-- Populate this dropdown dynamically using JavaScript -->
+    </select>
+
+    <!-- Photo Upload Form -->
+    <form id="uploadForm">
+        <label for="photoInput">Choose a Photo:</label>
+        <input type="file" id="photoInput" accept="image/*" required>
+
+        <label for="descriptionInput">Description:</label>
+        <input type="text" id="descriptionInput" required>
+
+        <button type="submit">Upload Photo</button>
+    </form>
+
+    <!-- JavaScript logic -->
+    <script src="admin.js"></script>
+</body>
+</html>
