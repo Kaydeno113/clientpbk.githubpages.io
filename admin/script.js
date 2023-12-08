@@ -23,7 +23,7 @@ function login() {
             var userUID = userCredential.user.uid;
 
             // Redirect to the user's dashboard based on the UID
-            window.location.href = 'https://clients.photographybykayden.studio/admin/' + userUID;
+            window.location.href = 'https://clients.photographybykayden.studio/admin/adminDB' + userUID;
         })
         .catch(function(error) {
             // Handle errors, e.g., display an error message
